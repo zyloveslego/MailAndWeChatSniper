@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # !--------------!
-# gmail需要打开pop，并且允许不安全的应用访问
+# gmail需要打开pop和IMAP，并且允许不安全的应用访问
 
 # pop下载后就从pop服务器删除了，所以只会读取一次
 
@@ -187,8 +187,8 @@ def stringMatch(text):
 
 
 if __name__ == "__main__":
-    mail = "husyzy79@gmail.com"
-    password = "Zy.19920709"
+    mail = ""
+    password = ""
     while(1):
         # getMailContentbyPOP(mail, password)
         getMailContentbyIMAP(mail, password)
