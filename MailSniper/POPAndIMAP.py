@@ -74,43 +74,47 @@ def print_info(msg, indent=0):
 
 
 def getMailContentbyPOP(mail, password, pop3_server):
-    print("connecting")
     server = poplib.POP3_SSL(pop3_server)
-    # server.set_debuglevel(1)
-    server.user(mail)
-    server.pass_(password)
-    print("success connect")
+    try:
+        print("connecting")
+        # server.set_debuglevel(1)
+        server.user(mail)
+        server.pass_(password)
+        print("success connect")
 
-    # stat()返回邮件数量和占用空间:
-    message, size = server.stat()
-    # print('Messages: %s. Size: %s' % (message, size))
+        # stat()返回邮件数量和占用空间:
+        message, size = server.stat()
+        # print('Messages: %s. Size: %s' % (message, size))
 
-    if message != 0:
-        # list()返回所有邮件的编号:
-        resp, mails, octets = server.list()
+        if message != 0:
+            # list()返回所有邮件的编号:
+            resp, mails, octets = server.list()
 
-        # 获取最新一封邮件, 注意索引号从1开始:
-        index = len(mails)
-        # print(index)
-        for i in range(index):
-            resp_first, lines, octets_first = server.retr(i+1)
+            # 获取最新一封邮件, 注意索引号从1开始:
+            index = len(mails)
+            # print(index)
+            for i in range(index):
+                resp_first, lines, octets_first = server.retr(i + 1)
 
-            # Message对象本身可能是一个MIMEMultipart对象，即包含嵌套的其他MIMEBase对象，嵌套可能还不止一层
-            msg_content = b'\r\n'.join(lines).decode('utf-8')
-            msg = Parser().parsestr(msg_content)
+                # Message对象本身可能是一个MIMEMultipart对象，即包含嵌套的其他MIMEBase对象，嵌套可能还不止一层
+                msg_content = b'\r\n'.join(lines).decode('utf-8')
+                msg = Parser().parsestr(msg_content)
 
-            try:
-                # print_info(msg)
-                if stringMatch(str(msg)) == 'Y':
-                    # TODO: 如果msg中有相关信息则通知
-                    print("有业务了")
-            except Exception as e:
-                print(e)
-    else:
-        print("No new mail")
+                try:
+                    # print_info(msg)
+                    if stringMatch(str(msg)) == 'Y':
+                        # TODO: 如果msg中有相关信息则通知
+                        print("有业务了")
+                except Exception as e:
+                    print(e)
+        else:
+            print("No new mail")
 
+    except:
+        print("success failed")
 
-    server.quit()
+    finally:
+        server.quit()
 
 
 # IMAP
@@ -172,7 +176,7 @@ def getMailContentbyIMAP(mail, password, imap_server):
 # 搜索字符串
 def stringMatch(text):
     bt = 'rmb|人民币|dollar|美元'
-    m = re.search(bt, text)
+    m = re.search(bt, text, flags=re.IGNORECASE)
     if m is not None:
         print(m.group())
         print("match success")
@@ -191,6 +195,6 @@ if __name__ == "__main__":
     while(1):
         # pop和imap选一种
         # getMailContentbyPOP(mail, password, pop3_server)
-        # getMailContentbyIMAP(mail, password, imap_server)
+        getMailContentbyIMAP(mail, password, imap_server)
         print("sleep 60s")
         time.sleep(60)
