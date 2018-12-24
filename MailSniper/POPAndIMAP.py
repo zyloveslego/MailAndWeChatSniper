@@ -91,8 +91,9 @@ def getMailContentbyPOP(mail, password, pop3_server):
 
         # 获取最新一封邮件, 注意索引号从1开始:
         index = len(mails)
+        # print(index)
         for i in range(index):
-            resp_first, lines, octets_first = server.retr(i)
+            resp_first, lines, octets_first = server.retr(i+1)
 
             # Message对象本身可能是一个MIMEMultipart对象，即包含嵌套的其他MIMEBase对象，嵌套可能还不止一层
             msg_content = b'\r\n'.join(lines).decode('utf-8')
@@ -100,7 +101,7 @@ def getMailContentbyPOP(mail, password, pop3_server):
 
             try:
                 # print_info(msg)
-                if stringMatch(msg) == 'Y':
+                if stringMatch(str(msg)) == 'Y':
                     # TODO: 如果msg中有相关信息则通知
                     print("有业务了")
             except Exception as e:
@@ -160,7 +161,7 @@ def getMailContentbyIMAP(mail, password, imap_server):
                 # print('-' * 10, 'mail content', '-' * 10)
                 # print(mail_content.replace('<br>', '\n'))
                 # print('-' * 10, 'mail content', '-' * 10)
-                if stringMatch(subject) == 'Y' or stringMatch(mail_content) == 'Y':
+                if stringMatch(str(subject)) == 'Y' or stringMatch(str(mail_content)) == 'Y':
                     # TODO: 如果msg中有相关信息则通知
                     print("有业务了")
     finally:
@@ -188,7 +189,8 @@ if __name__ == "__main__":
     imap_server = 'imap.gmail.com'
 
     while(1):
+        # pop和imap选一种
         # getMailContentbyPOP(mail, password, pop3_server)
-        getMailContentbyIMAP(mail, password, imap_server)
+        # getMailContentbyIMAP(mail, password, imap_server)
         print("sleep 60s")
         time.sleep(60)
