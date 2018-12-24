@@ -73,10 +73,7 @@ def print_info(msg, indent=0):
             print('%sAttachment: %s' % ('  ' * indent, content_type))
 
 
-def getMailContentbyPOP(mail, password):
-    # 输入邮件地址, 口令和POP3服务器地址:
-    pop3_server = "pop.gmail.com"
-
+def getMailContentbyPOP(mail, password, pop3_server):
     print("connecting")
     server = poplib.POP3_SSL(pop3_server)
     # server.set_debuglevel(1)
@@ -116,9 +113,7 @@ def getMailContentbyPOP(mail, password):
 
 
 # IMAP
-def getMailContentbyIMAP(mail, password):
-    imap_server = 'imap.gmail.com'
-
+def getMailContentbyIMAP(mail, password, imap_server):
     conn = IMAPClient(imap_server, ssl=True)
     try:
         conn.login(mail, password)
@@ -189,8 +184,11 @@ def stringMatch(text):
 if __name__ == "__main__":
     mail = ""
     password = ""
+    pop3_server = "pop.gmail.com"
+    imap_server = 'imap.gmail.com'
+
     while(1):
-        # getMailContentbyPOP(mail, password)
-        getMailContentbyIMAP(mail, password)
+        # getMailContentbyPOP(mail, password, pop3_server)
+        getMailContentbyIMAP(mail, password, imap_server)
         print("sleep 60s")
         time.sleep(60)
