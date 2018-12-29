@@ -17,6 +17,8 @@ from email.parser import Parser
 from email.header import decode_header
 from email.utils import parseaddr
 
+import itchat
+
 
 # POP
 def decode_str(s):
@@ -167,6 +169,8 @@ def getMailContentbyIMAP(mail, password, imap_server):
                 # print('-' * 10, 'mail content', '-' * 10)
                 if stringMatch(str(subject)) == 'Y' or stringMatch(str(mail_content)) == 'Y':
                     # TODO: 如果msg中有相关信息则通知
+                    msg = 'From: ' + str(mail_from) + '\n' + '标题: ' + str(subject) + '\n'+'正文: ' + str(mail_content.replace('<br>', '\n'))
+                    wechatNotify(msg)
                     print("有业务了")
     finally:
         conn.logout()
@@ -185,12 +189,20 @@ def stringMatch(text):
         return 'N'
 
 
+# 微信提醒
+def wechatNotify(msg):
+    # itchat.auto_login(hotReload=True)
+    itchat.send("有业务了!: %s" % msg, toUserName='filehelper')
+
+
+
 
 if __name__ == "__main__":
     mail = ""
     password = ""
     pop3_server = "pop.gmail.com"
     imap_server = 'imap.gmail.com'
+    itchat.auto_login(hotReload=True)
 
     while(1):
         # pop和imap选一种

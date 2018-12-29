@@ -1,1 +1,2 @@
 IMAPClient==2.1.0
+itchat==1.3.10
