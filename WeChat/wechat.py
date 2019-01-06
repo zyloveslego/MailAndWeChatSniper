@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import itchat
 from itchat.content import *
 
@@ -23,8 +25,12 @@ def wechatNotify(msg):
     # itchat.auto_login(hotReload=True)
     nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # 重要信息，谁发的，在哪个群，时间
+    # TODO: 微信号
     # TODO: 以后看能否提出换汇数量和换汇方式等等
-    itchat.send("%s, 有业务了! From: %s, 群: %s, Content: %s" % (nowTime, msg.ActualNickName, msg.User.NickName ,msg.text), toUserName='filehelper')
+    try:
+        itchat.send("%s, 有业务了! From: %s, 群: %s, Content: %s" % (nowTime, msg.ActualNickName, msg.User.NickName ,msg.text), toUserName='filehelper')
+    except:
+        pass
 
 
 @itchat.msg_register(TEXT, isGroupChat=True)
