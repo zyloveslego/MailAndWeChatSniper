@@ -22,6 +22,12 @@ import itchat
 
 # POP
 def decode_str(s):
+    """ explanation
+    Args:
+        s (string):
+    return:
+        value (string):
+    """
     value, charset = decode_header(s)[0]
     if charset:
         value = value.decode(charset)
@@ -45,7 +51,7 @@ def print_info(msg, indent=0):
         for header in ['From', 'To', 'Subject']:
             value = msg.get(header, '')
             if value:
-                if header=='Subject':
+                if header == 'Subject':
                     value = decode_str(value)
                 else:
                     hdr, addr = parseaddr(value)
@@ -125,8 +131,9 @@ def getMailContentbyIMAP(mail, password, imap_server):
     try:
         conn.login(mail, password)
         print("success connect")
-    except conn.Error:
+    except conn.Error as e:
         print('Could not log in')
+        print(e)
         sys.exit(1)
     else:
         conn.select_folder('INBOX', readonly=False)
@@ -156,9 +163,12 @@ def getMailContentbyIMAP(mail, password, imap_server):
             # content转化成中文
             try:
                 if mail_content != None:
-                    mail_content = mail_content.decode('gbk')
-            except UnicodeDecodeError:
+                    print(mail_content)
+                    mail_content = mail_content.decode('utf8')
+                    print(mail_content)
+            except UnicodeDecodeError as e:
                 print('decode error')
+                print(e)
 
             else:
                 # print('new message')
@@ -170,7 +180,7 @@ def getMailContentbyIMAP(mail, password, imap_server):
                 if stringMatch(str(subject)) == 'Y' or stringMatch(str(mail_content)) == 'Y':
                     # TODO: 如果msg中有相关信息则通知
                     msg = 'From: ' + str(mail_from) + '\n' + '标题: ' + str(subject) + '\n'+'正文: ' + str(mail_content.replace('<br>', '\n'))
-                    wechatNotify(msg)
+                    # wechatNotify(msg)
                     print("有业务了")
     finally:
         conn.logout()
@@ -202,7 +212,7 @@ if __name__ == "__main__":
     password = ""
     pop3_server = "pop.gmail.com"
     imap_server = 'imap.gmail.com'
-    itchat.auto_login(hotReload=True)
+    # itchat.auto_login(hotReload=True)
 
     while(1):
         # pop和imap选一种

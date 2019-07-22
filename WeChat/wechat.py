@@ -34,6 +34,8 @@ def wechatNotify(msg):
     # TODO: 以后看能否提出换汇数量和换汇方式等
     # print the time, user name(备注名 in group chat), group name, message content
     try:
+        print(msg.User)
+        print(msg.User.Self)
         itchat.send("%s, 有业务了! From: %s, 群: %s, Content: %s" % (nowTime, msg.ActualNickName, msg.User.NickName ,msg.text), toUserName='filehelper')
     except:
         pass
@@ -42,6 +44,8 @@ def wechatNotify(msg):
 # Override the messages in the group chat.(处理群消息)
 @itchat.msg_register(TEXT, isGroupChat=True)
 def text_reply(msg):
+    print("receive")
+    wechatNotify(msg)
     # if I am been @, then repley the message.
     if msg.isAt:
         #msg.user.send(u'@%s\u2005 I received: %s' % (
@@ -95,9 +99,9 @@ def add_friend(msg):
     msg.user.send('Nice to meet you!')
 
 #可以多开一个聊天机器人， 是否可以无限多开？
-newInstance = itchat.new_instance()
-newInstance.auto_login(hotReload=True, statusStorageDir='newInstance.pkl')
-newInstance.run()
+# newInstance = itchat.new_instance()
+# newInstance.auto_login(hotReload=True, statusStorageDir='newInstance.pkl')
+# newInstance.run()
 
 #登陆的时候使用命令行显示二维码, 程序关闭，一定时间内重新开启也可以不用重新扫码
 itchat.auto_login(hotReload=True)
