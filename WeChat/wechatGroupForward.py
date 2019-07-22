@@ -25,6 +25,7 @@ def wechatNotify(msg, keyword):
     try:
         # 默认发送给文件传输助手
         print("forwarding")
+
         itchat.send("%s, 有业务了! 发消息人: %s, 来自群: %s, 内容: %s" % (nowTime, msg.ActualNickName, msg.User.NickName, msg.text), toUserName='filehelper')
         # 转发的时候需要匹配msg.User.UserName，不能使用NickName
         # 转发给设置需要转发的群
@@ -32,6 +33,8 @@ def wechatNotify(msg, keyword):
             forwardGroupInfo = itchat.search_chatrooms(name=forwardGroup)
             forwardGroupUserName = forwardGroupInfo[0]['UserName']
             itchat.send("%s。关键字: %s。来自群: %s, 内容: %s" % (nowTime, keyword, msg.User.NickName, msg.text), forwardGroupUserName)
+
+        print("forward success")
     except:
         pass
 
@@ -71,6 +74,6 @@ if __name__ == '__main__':
     forwardMsg = []
 
 
-#登陆的时候使用命令行显示二维码, 程序关闭，一定时间内重新开启也可以不用重新扫码
-itchat.auto_login(hotReload=True)
-itchat.run()
+    #登陆的时候使用命令行显示二维码, 程序关闭，一定时间内重新开启也可以不用重新扫码
+    itchat.auto_login(hotReload=True)
+    itchat.run()
