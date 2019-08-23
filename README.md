@@ -21,8 +21,9 @@ IMAP会存所有收到的邮件，需要代码设置为seen
 
 # 数据库
 
+参见DB.md
 
-mysql  Ver 8.0.11 for osx10.13 on x86_64
+版本：mysql  Ver 8.0.11 for osx10.13 on x86_64
 
 
 **GroupInfo** : GroupID, GroupName
