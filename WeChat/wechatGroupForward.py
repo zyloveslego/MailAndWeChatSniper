@@ -39,16 +39,16 @@ def wechatNotify(msg, forwardList, keywordList):
 
     nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     try:
-        # 默认发送给文件传输助手
+        # 默认发送给文件传输助手，可以选择不发
         print("forwarding")
 
-        itchat.send("%s, 有业务了! 发消息人: %s, 来自群: %s, 内容: %s" % (nowTime, msg.ActualNickName, msg.User.NickName, msg.text), toUserName='filehelper')
+        # itchat.send("%s, 有业务了! 发消息人: %s, 来自群: %s, 内容: %s" % (nowTime, msg.ActualNickName, msg.User.NickName, msg.text), toUserName='filehelper')
         # 转发的时候需要匹配msg.User.UserName，不能使用NickName
         # 转发给设置需要转发的群
-        for forwardGroup, keywordSend in zip(forwardList, keywordList):
+        for forwardTo, keywordSend in zip(forwardList, keywordList):
             # forwardGroupInfo = itchat.search_chatrooms(name=forwardGroup)
             # forwardGroupUserName = forwardGroupInfo[0]['UserName']
-            itchat.send("%s。关键字: %s。来自群: %s, 内容: %s" % (nowTime, keywordSend, msg.User.NickName, msg.text), forwardGroup)
+            itchat.send("%s。关键字: %s。来自群: %s, 内容: %s" % (nowTime, keywordSend, msg.User.NickName, msg.text), forwardTo)
 
         print("forward success")
     except Exception as e:

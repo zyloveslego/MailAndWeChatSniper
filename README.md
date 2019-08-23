@@ -20,10 +20,13 @@ IMAP会存所有收到的邮件，需要代码设置为seen
 监听listenerID群，匹配keyWord后，转发给forwardID群
 
 # 数据库
+
+
+mysql  Ver 8.0.11 for osx10.13 on x86_64
+
+
 **GroupInfo** : GroupID, GroupName
 
 **UserInfo** : UserID, UserName
 
 **ForwardRule** : UserID(ref UserInfo.UserID), ListenerID(ref GroupInfo.GroupID), ForwardID(ref GroupInfo.GroupID), keyWord
-
-(keyword: VARCHAR(200))
